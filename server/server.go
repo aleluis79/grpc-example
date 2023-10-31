@@ -8,6 +8,8 @@ import (
 	"net"
 
 	grpc "google.golang.org/grpc"
+
+	"google.golang.org/grpc/reflection"
 )
 
 type server struct {
@@ -24,6 +26,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	grpcServer := grpc.NewServer()
+	reflection.Register(grpcServer)
 	example.RegisterExampleServiceServer(grpcServer, &server{})
 	fmt.Println("server started")
 	if err := grpcServer.Serve(lis); err != nil {
